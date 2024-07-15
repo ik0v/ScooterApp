@@ -12,8 +12,8 @@ public class ScooterService {
     ScooterRepository scooterRepo;
     UserRepository userRepo;
 
-    public User addUser(String username) {
-        return userRepo.addUser(username);
+    public User addUser(String username, Scooter scooter, double range) {
+        return scooterRepo.addUser(username, scooter, range);
     }
 
     public ScooterService(ScooterRepository scooterRepo, UserRepository userRepo) {

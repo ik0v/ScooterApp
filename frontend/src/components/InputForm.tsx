@@ -10,10 +10,9 @@ const InputForm = () => {
   const [loading, setLoading] = useState(false);
   const [addScooterForm, setAddScooterForm] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleGetScooter = (event) => {
     event.preventDefault();
     getScooter();
-    // alert(`make: ${make}, model: ${model}`);
   };
 
   async function getScooter() {
@@ -21,7 +20,7 @@ const InputForm = () => {
     setAddScooterForm(false);
     try {
       const response = await fetch(
-        `http://localhost:8080/api/scooters?scooterMake=${make}&scooterModel=${model}`
+        `http://localhost:8080/api/scooters?scooterMake=${make}&scooterModel=${model}&_=${new Date().getTime()}`
       );
       if (!response.ok) {
         if (
@@ -46,10 +45,38 @@ const InputForm = () => {
     setLoading(false);
   }
 
+  const handleAddScooter = (event) => {
+    event.preventDefault();
+    addScooter();
+  };
+
+  async function addScooter() {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/scooters?username=${username}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ make, model, range }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to add scooter to the database");
+      }
+      console.log("Scooter added successfully!");
+    } catch (error) {
+      console.error("Error adding scooter: ", error.message);
+    } finally {
+      setAddScooterForm(false);
+    }
+  }
+
   return (
     <>
       <div className="input-form">
-        <form onSubmit={handleSubmit} className="form-content">
+        <form onSubmit={handleGetScooter} className="form-content">
           <div className="text-input">
             <label htmlFor="make" className="form-label">
               Make
@@ -90,7 +117,7 @@ const InputForm = () => {
       )}
       {addScooterForm && (
         <div className="input-form">
-          <form onSubmit={handleSubmit} className="form-content">
+          <form onSubmit={handleAddScooter} className="form-content">
             <div className="text-input">
               <label htmlFor="username" className="form-label">
                 Username

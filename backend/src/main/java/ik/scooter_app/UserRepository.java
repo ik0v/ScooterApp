@@ -1,5 +1,6 @@
 package ik.scooter_app;
 
+import ik.scooter_app.model.Scooter;
 import ik.scooter_app.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -11,12 +12,7 @@ public class UserRepository {
         this.userDbRepo = userDbRepo;
     }
 
-    public User addUser(String username) {
-        userDbRepo.save(new User(username));
-
-
-
-
-
-    }
+//    public User addUser(String username, Scooter scooter, double range) {
+//        return userDbRepo.save(new User(username, scooter, range ));
+//    }
 }

@@ -25,5 +25,11 @@ public class ScooterRepository {
         return scooterDbRepo.getScootersByMakeAndAndModel(sDi.make(), sDi.model());
     }
 
+    public User addUser(String username, Scooter scooter, double range) {
+        User user = scooter.addUser(username, range);
+        scooterDbRepo.save(scooter);
+        return user;
+    }
+
 
 }

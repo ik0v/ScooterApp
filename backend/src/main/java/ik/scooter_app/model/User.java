@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter @Setter
 @Entity(name = "owner")
 public class User {
@@ -15,10 +17,22 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private double range;
+
+    @ManyToOne
+    @JoinColumn(name = "scooter_id")
+    private Scooter scooter;
+
+//    @Column(nullable = false)
+//    private LocalDate registrationDate;
+
     public User() {}
 
-    public User(String name) {
+    public User(String name, Scooter scooter,  double range) {
         this.name = name;
+        this.range = range;
+        this.scooter = scooter;
     }
 
 

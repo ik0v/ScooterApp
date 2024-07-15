@@ -22,9 +22,9 @@ public class ScooterController {
 
     @PostMapping()
     ResponseEntity<ScooterDto> addScooter(@RequestBody ScooterDto scooterDto, @RequestParam String username) {
-        User user = service.addUser(username);
         Scooter scooter = service.addScooter(scooterDto);
         int scooterId = scooter.getId();
+        User user = service.addUser(username, scooter, scooterDto.range());
         URI location = URI.create("/api/carts/" + scooterId);
         return ResponseEntity.created(location).body(scooter.toDto());
     }
