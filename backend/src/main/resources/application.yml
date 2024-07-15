@@ -1,0 +1,30 @@
+debug: true
+server:
+    port: 8080
+spring:
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/saltdb
+        username: salt
+        password: secret
+    jpa:
+        show-sql: true
+        defer-datasource-initialization: true
+        hibernate:
+            ddl-auto: create-drop
+
+    sql:
+        init:
+            platform: postgresql
+            mode: always
+    output:
+        ansi:
+            enabled: always
+
+logging:
+    level:
+        org:
+            springframework:
+                boot:
+                    autoconfigure: ERROR
+
