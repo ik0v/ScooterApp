@@ -35,5 +35,9 @@ public class User {
         this.scooter = scooter;
     }
 
+    public UserDto toUserDto() {
+        return new UserDto(this.name, this.range);
+    }
+
 
 }

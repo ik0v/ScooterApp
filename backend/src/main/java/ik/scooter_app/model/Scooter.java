@@ -6,9 +6,11 @@ import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "make", "model" }) })
 @Getter @Setter
 public class Scooter {
 
@@ -31,15 +33,15 @@ public class Scooter {
     }
 
     public Scooter(String make, String model, double range) {
-        this.make = make;
-        this.model = model;
+        this.make = make.toUpperCase();
+        this.model = model.toUpperCase();
         this.range = range;
         this.users = new HashSet<>();
     }
 
     public Scooter(ScooterDto scooterDto) {
-        this.make = scooterDto.make();
-        this.model = scooterDto.model();
+        this.make = scooterDto.make().toUpperCase();
+        this.model = scooterDto.model().toUpperCase();
         this. range = scooterDto.range();
         this.users = new HashSet<>();
     }
@@ -52,6 +54,11 @@ public class Scooter {
         User newUser = new User(userName, this, range);
         users.add(newUser);
         return newUser;
+    }
+
+    public ScooterDtoOutgoing toScooterDtoOutgoing() {
+        Set<UserDto> userDtos = users.stream().map(User::toUserDto).collect(Collectors.toSet());
+        return new ScooterDtoOutgoing(id, make, model, range, userDtos);
     }
 
 }

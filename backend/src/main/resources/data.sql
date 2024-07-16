@@ -1,7 +1,7 @@
 INSERT INTO scooter (make, model, range)
 VALUES ('QMWHEELS', 'H7', 30),
-       ('Xiaomi', '4 lite', 25),
-       ('E2S', 'V2 Long Range', 35);
+       ('Xiaomi', '4 LITE', 25),
+       ('E2S', 'V2 LONG RANGE', 35);
 
 INSERT INTO owner (name, range, scooter_id)
 VALUES ('owner1', 30, 1),

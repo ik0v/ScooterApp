@@ -1,9 +1,7 @@
 package ik.scooter_app;
 
-import ik.scooter_app.model.Scooter;
-import ik.scooter_app.model.ScooterDto;
-import ik.scooter_app.model.ScooterDtoIncoming;
-import ik.scooter_app.model.User;
+import ik.scooter_app.model.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,16 +22,28 @@ public class ScooterController {
     ResponseEntity<ScooterDto> addScooter(@RequestBody ScooterDto scooterDto, @RequestParam String username) {
         Scooter scooter = service.addScooter(scooterDto);
         int scooterId = scooter.getId();
-        User user = service.addUser(username, scooter, scooterDto.range());
-        URI location = URI.create("/api/carts/" + scooterId);
+//        User user = service.addUser(username, scooter, scooterDto.range());
+        URI location = URI.create("/api/scooters/" + scooterId);
         return ResponseEntity.created(location).body(scooter.toDto());
     }
 
-    @GetMapping()
-    ResponseEntity<ScooterDto> getScooterRange(@RequestParam String scooterMake, @RequestParam String scooterModel) {
+    @PostMapping("/{id}")
+    ResponseEntity<UserDto> addRange(@PathVariable int id, @RequestBody UserDto userDto) {
         try {
-            ScooterDto scooterDto = service.getScooter(new ScooterDtoIncoming(scooterMake.strip(), scooterModel.strip()));
-            return ResponseEntity.ok(scooterDto);
+            service.addRange(id, userDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }d
+
+    @GetMapping()
+    ResponseEntity<ScooterDtoOutgoing> getScooterRange(@RequestParam String scooterMake,
+                                                       @RequestParam String scooterModel) {
+        try {
+            ScooterDtoOutgoing scooterDtoOutgoing = service.getScooter(
+                    new ScooterDtoIncoming(scooterMake.strip().toUpperCase(), scooterModel.strip().toUpperCase()));
+            return ResponseEntity.ok(scooterDtoOutgoing);
         } catch (IllegalArgumentException e ) {
             return ResponseEntity.notFound().build();
         }

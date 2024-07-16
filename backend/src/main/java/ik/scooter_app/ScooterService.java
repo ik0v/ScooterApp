@@ -1,39 +1,46 @@
 package ik.scooter_app;
 
-import ik.scooter_app.model.Scooter;
-import ik.scooter_app.model.ScooterDto;
-import ik.scooter_app.model.ScooterDtoIncoming;
-import ik.scooter_app.model.User;
+import ik.scooter_app.model.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ScooterService {
 
     ScooterRepository scooterRepo;
-    UserRepository userRepo;
 
     public User addUser(String username, Scooter scooter, double range) {
         return scooterRepo.addUser(username, scooter, range);
     }
 
-    public ScooterService(ScooterRepository scooterRepo, UserRepository userRepo) {
+    public ScooterService(ScooterRepository scooterRepo) {
         this.scooterRepo = scooterRepo;
-        this.userRepo = userRepo;
     }
 
     public Scooter createScooter(ScooterDto scooterDto) {
         return scooterRepo.addScooter(scooterDto);
     }
 
-    public ScooterDto getScooter(ScooterDtoIncoming scooterDtoIncoming) {
+    public ScooterDtoOutgoing getScooter(ScooterDtoIncoming scooterDtoIncoming) {
         Scooter scooter = scooterRepo.getScooter(scooterDtoIncoming);
         if (scooter == null) {
             throw new IllegalArgumentException();
         }
-        return scooter.toDto();
+        return scooter.toScooterDtoOutgoing();
     }
 
     public Scooter addScooter(ScooterDto scooterDto) {
         return scooterRepo.addScooter(scooterDto);
     }
+
+    public void addRange(int id, UserDto userDto) {
+        var scooterOptional = scooterRepo.getScooter(id);
+        if (scooterOptional.isPresent()) {
+            Scooter scooter = scooterOptional.get();
+            scooter.addUser(userDto.name(), userDto.range());
+            scooterRepo.updateScooter(scooter);
+        } else {
+            throw new IllegalArgumentException("Scooter was not found");
+        }
+    }
+
 }

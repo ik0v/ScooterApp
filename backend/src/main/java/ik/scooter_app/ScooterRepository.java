@@ -6,6 +6,8 @@ import ik.scooter_app.model.ScooterDtoIncoming;
 import ik.scooter_app.model.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class ScooterRepository {
     ScooterDbRepository scooterDbRepo;
@@ -18,11 +20,16 @@ public class ScooterRepository {
         return scooterDbRepo.save(new Scooter(scooterDto));
     }
 
-    public void registerRange(Scooter scooter, User user) {
+    public void updateScooter(Scooter scooter) {
+        scooterDbRepo.save(scooter);
     }
 
     public Scooter getScooter(ScooterDtoIncoming sDi) {
         return scooterDbRepo.getScootersByMakeAndAndModel(sDi.make(), sDi.model());
+    }
+
+    public Optional<Scooter> getScooter(int id) {
+        return scooterDbRepo.findById(id);
     }
 
     public User addUser(String username, Scooter scooter, double range) {
