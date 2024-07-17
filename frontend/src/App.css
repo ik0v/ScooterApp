@@ -1,30 +1,5 @@
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgb(255, 255, 255);
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
-  height: 3em;
-}
-
 body {
+  background-color: #f0f8ff;
   margin: 0px;
-}
-
-li {
-  margin: 0px;
-  padding: 0.2em;
-  margin: 1em;
-}
-
-ul {
-  display: flex;
-  flex-wrap: wrap;
-  list-style-type: none;
-  margin: 0px;
-  padding: 5px;
-}
-
-a {
-  text-decoration: none;
+  font-family: Arial, sans-serif;
 }

@@ -3,17 +3,20 @@ import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <header>
-      {/* <img className="logo" src={logo} alt="img" /> */}
       <nav>
         <ul className="navList">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
           </li>
-          <hr />
           <li>
-            <Link to="/search">Search</Link>
+            <hr />
           </li>
-          <hr />
+          <li>
+            <Link to="/scooters">Scooter Page</Link>
+          </li>
+          <li>
+            <hr />
+          </li>
           <li>
             <Link to="/about">About</Link>
           </li>

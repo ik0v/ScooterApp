@@ -79,11 +79,12 @@ const ScooterPage = () => {
         throw new Error("Failed to add scooter to the database");
       }
       setMessage(`${make} ${model} was added to database`);
-      setTimeout(emptyLog, 2500);
+      setTimeout(emptyLog, 2000);
     } catch (error) {
       console.error("Error adding scooter: ", error.message);
     } finally {
       setAddScooterForm(false);
+      getScooter();
     }
   }
 
@@ -114,6 +115,7 @@ const ScooterPage = () => {
       console.error("Error adding scooter range: ", error.message);
     } finally {
       setAddRangeForm(false);
+      getScooter();
     }
   }
 
@@ -149,7 +151,8 @@ const ScooterPage = () => {
         <Scooter
           make={scooterData.make}
           model={scooterData.model}
-          range={scooterData.range}
+          claimedRange={scooterData.claimedRange}
+          realRange={scooterData.realRange}
           users={scooterData.users}
           onClk={() => setAddRangeForm(true)}
         />

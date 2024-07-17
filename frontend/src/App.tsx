@@ -1,21 +1,20 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header";
 import ScooterPage from "./components/ScooterPage";
+import Home from "./components/Home";
+import About from "./components/About";
 import { useState } from "react";
-import Scooter from "./components/Scooter";
 
 function App() {
   // const [scooterData, setScooterData] = useState(null);
   return (
     <>
-      <BrowserRouter>
-        <ScooterPage />
-        {/* {scooterData && <Scooter scooterData={scooterData} />} */}
-        {/* <Route path="/add" element={<Add />}></Route>
-        <Route path="/create" element={<Create />}></Route>
-        <Route path="/gallery" element={<Gallery />}></Route> */}
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ScooterPage />}></Route>
+        <Route path="/home" element={<Home />}></Route>
+        <Route path="/scooters" element={<ScooterPage />}></Route>
+        <Route path="/about" element={<About />}></Route>
+      </Routes>
     </>
   );
 }

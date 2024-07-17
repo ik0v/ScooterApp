@@ -35,7 +35,7 @@ public class ScooterController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
-    }d
+    }
 
     @GetMapping()
     ResponseEntity<ScooterDtoOutgoing> getScooterRange(@RequestParam String scooterMake,

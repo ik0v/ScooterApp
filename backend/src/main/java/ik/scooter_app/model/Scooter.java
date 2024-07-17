@@ -23,42 +23,49 @@ public class Scooter {
     @Column(nullable = false)
     private String model;
     @Column(nullable = false)
-    private double range;
+    private double claimedRange;
+    @Column(nullable = true)
+    private Double realRange;
 
     @OneToMany(mappedBy = "scooter", cascade = {CascadeType.MERGE})
     private Set<User> users;
 
     public Scooter() {
         this.users = new HashSet<>();
+        this.realRange = 0d;
     }
 
-    public Scooter(String make, String model, double range) {
+    public Scooter(String make, String model, double claimedRange) {
         this.make = make.toUpperCase();
         this.model = model.toUpperCase();
-        this.range = range;
+        this.claimedRange = claimedRange;
+        this.realRange = 0d;
         this.users = new HashSet<>();
     }
 
     public Scooter(ScooterDto scooterDto) {
         this.make = scooterDto.make().toUpperCase();
         this.model = scooterDto.model().toUpperCase();
-        this. range = scooterDto.range();
+        this.claimedRange = scooterDto.range();
+        this.realRange = 0d;
         this.users = new HashSet<>();
     }
 
     public ScooterDto toDto() {
-        return new ScooterDto(make, model, range);
+        return new ScooterDto(make, model, claimedRange);
     }
 
     public User addUser(String  userName, double range) {
         User newUser = new User(userName, this, range);
+        realRange = users.isEmpty() ? range : (realRange * users.size() + range) / (users.size() + 1);
+        System.out.println(realRange);
         users.add(newUser);
         return newUser;
     }
 
     public ScooterDtoOutgoing toScooterDtoOutgoing() {
         Set<UserDto> userDtos = users.stream().map(User::toUserDto).collect(Collectors.toSet());
-        return new ScooterDtoOutgoing(id, make, model, range, userDtos);
+        return new ScooterDtoOutgoing(id, make, model, claimedRange, realRange, userDtos);
     }
 
 }
