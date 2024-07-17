@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Input.css";
+// import "./Input.css";
 import "./ScooterPage.css";
 import InputForm from "./InputForm";
 import Scooter from "./Scooter";

@@ -1,0 +1,17 @@
+/* Custom CSS for ScooterList component */
+.card {
+  margin-top: 0px;
+}
+
+.table th,
+.table td {
+  vertical-align: middle; /* Example: Aligns content vertically centered in table cells */
+}
+
+.table th {
+  font-weight: bold; /* Example: Makes table header text bold */
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f5f5f5; /* Example: Light background color on hover */
+}

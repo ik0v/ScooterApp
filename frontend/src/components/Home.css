@@ -1,0 +1,30 @@
+.container {
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.card {
+  border: none;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card-title {
+  font-size: 2.5rem;
+  color: #74a1d2;
+}
+
+.card-text {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.font-italic {
+  font-style: italic;
+}
