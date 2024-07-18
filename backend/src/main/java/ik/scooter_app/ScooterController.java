@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -27,6 +28,15 @@ public class ScooterController {
         return ResponseEntity.created(location).body(scooter.toDto());
     }
 
+    @DeleteMapping()
+    ResponseEntity<?> deleteScooter(@RequestBody ScooterDto scooterDto, @RequestParam String username, @RequestParam String password) {
+        if(!password.equals("pass")) {
+            return ResponseEntity.badRequest().build();
+        }
+        service.deleteScooter(scooterDto);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/{id}")
     ResponseEntity<UserDto> addRange(@PathVariable int id, @RequestBody UserDto userDto) {
         try {
@@ -42,8 +52,40 @@ public class ScooterController {
                                                        @RequestParam String scooterModel) {
         try {
             ScooterDtoOutgoing scooterDtoOutgoing = service.getScooter(
-                    new ScooterDtoIncoming(scooterMake.strip().toUpperCase(), scooterModel.strip().toUpperCase()));
+                    new ScooterDtoIncoming(scooterMake.strip(), scooterModel.strip()));
             return ResponseEntity.ok(scooterDtoOutgoing);
+        } catch (IllegalArgumentException e ) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/makes")
+    ResponseEntity<List<String>> getScooterMakes() {
+        List<String> scooterMakes = service.getScooterMakes();
+        return ResponseEntity.ok(scooterMakes);
+    }
+
+    @GetMapping("/models")
+    ResponseEntity<List<String>> getScooterModels(@RequestParam String make) {
+        List<String> scooterMakes = service.getScooterModels(make);
+        return ResponseEntity.ok(scooterMakes);
+    }
+
+    @GetMapping("/leaderboard/range")
+    ResponseEntity<List<ScooterDtoOutgoing>> getLeaderboardByRange() {
+        try {
+            List<ScooterDtoOutgoing> leaderboardByRange = service.getLeaderboardByRange();
+            return ResponseEntity.ok(leaderboardByRange);
+        } catch (IllegalArgumentException e ) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/leaderboard/ratio")
+    ResponseEntity<List<ScooterDtoOutgoing>> getLeaderboardByRatio() {
+        try {
+            List<ScooterDtoOutgoing> leaderboardByRatio = service.getLeaderboardByRatio();
+            return ResponseEntity.ok(leaderboardByRatio);
         } catch (IllegalArgumentException e ) {
             return ResponseEntity.notFound().build();
         }

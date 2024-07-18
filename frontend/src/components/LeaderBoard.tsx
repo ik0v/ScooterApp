@@ -36,7 +36,7 @@ const LeaderBoard = () => {
                 className={`btn custom-btn ${
                   activeList === "ratio" ? "btn-active" : "btn-inactive"
                 }`}
-                onClick={() => handleSwitchToList("default")}
+                onClick={() => handleSwitchToList("ratio")}
               >
                 By Ratio
               </button>

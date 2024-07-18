@@ -13,6 +13,7 @@ interface ScooterProps {
   realRange: number;
   users: User[];
   onClk: () => void;
+  onClk2: () => void;
 }
 
 const Scooter = ({
@@ -22,12 +23,13 @@ const Scooter = ({
   realRange,
   users,
   onClk,
+  onClk2,
 }: ScooterProps) => {
   return (
     <div className="container d-flex justify-content-center">
       <div
-        className="card shadow p-4 mt-5 scooter-card"
-        style={{ width: "40%" }}
+        className="card shadow p-4 mt-0 scooter-card"
+        // style={{ width: "40%" }}
       >
         <h3 className="card-title text-center">Scooter Details</h3>
         <p className="card-text">
@@ -43,9 +45,12 @@ const Scooter = ({
           <strong>Real range:</strong>{" "}
           {realRange && parseFloat(realRange.toFixed(2))}
         </p>
-        <div className="d-flex justify-content-center mb-3">
+        <div className="d-flex justify-content-evenly mb-3">
           <button className="btn btn-primary" onClick={onClk}>
             Add Range
+          </button>
+          <button className="btn btn-primary" onClick={onClk2}>
+            Delete Scooter
           </button>
         </div>
         <ul className="list-group list-group-flush">

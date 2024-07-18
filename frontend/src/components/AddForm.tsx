@@ -8,22 +8,34 @@ interface Props {
   inputName2: string;
   inputField2: string;
   setInputField2: (field2State: string) => void;
+  inputName3: string;
+  inputField3: string;
+  setInputField3: (field2State: string) => void;
+  inputName4: string;
+  inputField4: string;
+  setInputField4: (field2State: string) => void;
   onSubm: () => void;
   buttonName: string;
 }
 
-const InputForm = ({
+const AddForm = ({
   inputName1,
   inputField1,
   setInputField1,
   inputName2,
   inputField2,
   setInputField2,
+  inputName3,
+  inputField3,
+  setInputField3,
+  inputName4,
+  inputField4,
+  setInputField4,
   onSubm,
   buttonName,
 }) => {
   return (
-    <div className="input-form">
+    <div className="add-form">
       <form onSubmit={onSubm} className="form-content">
         <div className="text-input">
           <label htmlFor="inputField1" className="form-label">
@@ -49,6 +61,30 @@ const InputForm = ({
             onChange={(e) => setInputField2(e.target.value)}
           />
         </div>
+        <div className="text-input">
+          <label htmlFor="inputField2" className="form-label">
+            {inputName3}
+          </label>
+          <input
+            className="form-control"
+            type="text"
+            id="inputField2"
+            value={inputField3}
+            onChange={(e) => setInputField3(e.target.value)}
+          />
+        </div>
+        <div className="text-input">
+          <label htmlFor="inputField2" className="form-label">
+            {inputName4}
+          </label>
+          <input
+            className="form-control"
+            type="text"
+            id="inputField4"
+            value={inputField4}
+            onChange={(e) => setInputField4(e.target.value)}
+          />
+        </div>
         <button type="submit" className="btn btn-secondary">
           {buttonName}
         </button>
@@ -57,36 +93,4 @@ const InputForm = ({
   );
 };
 
-export default InputForm;
-
-// <div className="input-form">
-//   <form onSubmit={handleAddScooter} className="form-content">
-//     <div className="text-input">
-//       <label htmlFor="username" className="form-label">
-//         Username
-//       </label>
-//       <input
-//         className="form-control"
-//         type="text"
-//         id="username"
-//         value={username}
-//         onChange={(e) => setUserName(e.target.value)}
-//       />
-//     </div>
-//     <div className="text-input">
-//       <label htmlFor="range" className="form-label">
-//         Range
-//       </label>
-//       <input
-//         className="form-control"
-//         type="text"
-//         id="range"
-//         value={range}
-//         onChange={(e) => setRange(e.target.value)}
-//       />
-//     </div>
-//     <button type="submit" className="btn btn-primary">
-//       Add scooter
-//     </button>
-//   </form>
-// </div>
+export default AddForm;

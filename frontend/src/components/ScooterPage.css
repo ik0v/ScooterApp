@@ -1,4 +1,27 @@
 .text-div {
-  height: 25px;
-  /* background-color: aliceblue; */
+  height: 35px;
+  padding-top: 10px;
+}
+
+.add-scooter-btn {
+  height: 6rem;
+  background-color: #d1e2f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.go-back-btn {
+  height: 2rem;
+  /* background-color: #d1e2f1; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 10px 20px; */
 }

@@ -1,5 +1,5 @@
 .scooter-card {
-  width: 100%; /* Adjusted width for responsiveness */
+  width: 40%;
 }
 
 .list-group-item {
@@ -17,5 +17,11 @@
 }
 
 .btn-primary {
-  padding: 0.4rem 0.8rem; /* Adjusted button padding */
+  padding: 0.4rem 0.8rem;
+}
+
+@media (max-width: 1000px) {
+  .scooter-card {
+    width: 80%;
+  }
 }

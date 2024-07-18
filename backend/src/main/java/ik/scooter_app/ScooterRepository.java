@@ -1,11 +1,11 @@
 package ik.scooter_app;
 
-import ik.scooter_app.model.Scooter;
-import ik.scooter_app.model.ScooterDto;
-import ik.scooter_app.model.ScooterDtoIncoming;
-import ik.scooter_app.model.User;
+import ik.scooter_app.model.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -38,5 +38,24 @@ public class ScooterRepository {
         return user;
     }
 
+    public List<Scooter> getLeaderboardByRange() {
+        return scooterDbRepo.findTop10ByOrderByRealRangeDesc();
+    }
 
+    public List<Scooter> getLeaderboardByRatio() {
+        Pageable topTen = PageRequest.of(0, 10);
+        return scooterDbRepo.findTop10ByRealToClaimedRangeRatio(topTen);
+    }
+
+    public List<String> getScooterMakes() {
+        return scooterDbRepo.findDistinctMakes();
+    }
+
+    public List<String> getScooterModels(String make) {
+        return scooterDbRepo.findByMake(make).stream().map(Scooter::getModel).toList();
+    }
+
+    public void deleteScooter(ScooterDto scooterDto) {
+        scooterDbRepo.delete(scooterDbRepo.getScootersByMakeAndAndModel(scooterDto.make(), scooterDto.model()));
+    }
 }

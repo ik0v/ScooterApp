@@ -3,6 +3,8 @@ package ik.scooter_app;
 import ik.scooter_app.model.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ScooterService {
 
@@ -43,4 +45,31 @@ public class ScooterService {
         }
     }
 
+    public List<ScooterDtoOutgoing> getLeaderboardByRange() {
+        List<Scooter> scooters = scooterRepo.getLeaderboardByRange();
+        return scooters
+                .stream()
+                .map(Scooter::toScooterDtoOutgoing)
+                .toList();
+    }
+
+    public List<ScooterDtoOutgoing> getLeaderboardByRatio() {
+        List<Scooter> scooters = scooterRepo.getLeaderboardByRatio();
+        return scooters
+                .stream()
+                .map(Scooter::toScooterDtoOutgoing)
+                .toList();
+    }
+
+    public List<String> getScooterMakes() {
+        return scooterRepo.getScooterMakes();
+    }
+
+    public List<String> getScooterModels(String make) {
+        return scooterRepo.getScooterModels(make);
+    }
+
+    public void deleteScooter(ScooterDto scooterDto) {
+        scooterRepo.deleteScooter(scooterDto);
+    }
 }

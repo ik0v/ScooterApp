@@ -27,7 +27,7 @@ public class Scooter {
     @Column(nullable = true)
     private Double realRange;
 
-    @OneToMany(mappedBy = "scooter", cascade = {CascadeType.MERGE})
+    @OneToMany(mappedBy = "scooter", cascade = {CascadeType.ALL})
     private Set<User> users;
 
     public Scooter() {
@@ -36,16 +36,16 @@ public class Scooter {
     }
 
     public Scooter(String make, String model, double claimedRange) {
-        this.make = make.toUpperCase();
-        this.model = model.toUpperCase();
+        this.make = make;
+        this.model = model;
         this.claimedRange = claimedRange;
         this.realRange = 0d;
         this.users = new HashSet<>();
     }
 
     public Scooter(ScooterDto scooterDto) {
-        this.make = scooterDto.make().toUpperCase();
-        this.model = scooterDto.model().toUpperCase();
+        this.make = scooterDto.make();
+        this.model = scooterDto.model();
         this.claimedRange = scooterDto.range();
         this.realRange = 0d;
         this.users = new HashSet<>();

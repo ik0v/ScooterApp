@@ -6,9 +6,17 @@
   background-color: #d1e2f1;
 }
 
+.add-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 6em;
+  background-color: #d1e2f1;
+}
+
 .form-content {
   display: flex;
-  width: 60%;
+  width: 70%;
   min-width: 600px;
   height: 75%;
   background: white;
@@ -38,15 +46,19 @@
   border-radius: 4px;
 }
 
-.btn-primary {
-  height: 2rem;
+.btn-secondary {
+  height: 2.1rem;
   margin-top: 1rem;
-  width: 150px;
+  /* width: 150px; */
+  /* min-width: 80px; */
 }
 
 @media (max-width: 768px) {
   .input-form {
     height: 13rem;
+  }
+  .add-form {
+    height: 23rem;
   }
   .form-content {
     padding: 0.2rem 2rem;
@@ -54,6 +66,11 @@
     min-width: 300px;
     height: 90%;
     flex-direction: column;
+  }
+
+  .btn-secondary {
+    /* height: 2.1rem; */
+    margin-top: 0rem;
   }
 
   .text-input {
