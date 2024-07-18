@@ -14,6 +14,7 @@ interface ScooterProps {
   users: User[];
   onClk: () => void;
   onClk2: () => void;
+  onClk3: () => void;
 }
 
 const Scooter = ({
@@ -24,6 +25,7 @@ const Scooter = ({
   users,
   onClk,
   onClk2,
+  onClk3,
 }: ScooterProps) => {
   return (
     <div className="container d-flex justify-content-center">
@@ -46,15 +48,18 @@ const Scooter = ({
           {realRange && parseFloat(realRange.toFixed(2))}
         </p>
         <div className="d-flex justify-content-evenly mb-3">
-          <button className="btn btn-primary" onClick={onClk}>
+          <button className="btn btn-secondary" onClick={onClk}>
             Add Range
           </button>
-          <button className="btn btn-primary" onClick={onClk2}>
+          <button className="btn btn-secondary" onClick={onClk2}>
             Delete Scooter
+          </button>
+          <button className="btn btn-secondary" onClick={onClk3}>
+            Get all reports
           </button>
         </div>
         <ul className="list-group list-group-flush">
-          {users.map((user, index) => (
+          {users.slice(0, 5).map((user, index) => (
             <li key={index} className="list-group-item text-center">
               <strong>{user.name}</strong>: {parseFloat(user.range.toFixed(2))}{" "}
               km

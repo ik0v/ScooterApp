@@ -16,11 +16,9 @@ const ScooterPage = () => {
   const [password, setPassword] = useState("");
   const [range, setRange] = useState("");
   const [scooterData, setScooterData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [addScooterForm, setAddScooterForm] = useState(false);
-  const [addRangeForm, setAddRangeForm] = useState(false);
-  const [deleteForm, setDeleteForm] = useState(false);
   const [message, setMessage] = useState("");
+
+  const [currentForm, setCurrentForm] = useState<string>("");
 
   const [makes, setMakes] = useState<string[]>([]);
   const [models, setModels] = useState<string[]>([]);
@@ -31,19 +29,11 @@ const ScooterPage = () => {
   };
 
   useEffect(() => {
-    setGetMake(make);
-  }, [makes, make]);
-
-  useEffect(() => {
-    setGetModel(model);
-  }, [model, models]);
-
-  useEffect(() => {
     fetch("http://localhost:8080/api/scooters/makes")
       .then((response) => response.json())
       .then((data) => setMakes(data))
       .catch((error) => console.error("Error fetching makes: ", error));
-  }, [make]);
+  }, [make, password]);
 
   useEffect(() => {
     if (getMake) {
@@ -56,11 +46,9 @@ const ScooterPage = () => {
     }
   }, [getMake]);
 
-  useEffect(() => {
-    if (addRangeForm) {
-      setAddScooterForm(false);
-    }
-  }, [addRangeForm]);
+  function emptyLog() {
+    setMessage("");
+  }
 
   async function getScooter() {
     if (!getMake || !getModel) {
@@ -68,10 +56,7 @@ const ScooterPage = () => {
       setTimeout(emptyLog, 2500);
       return;
     }
-    setScooterData(null);
     setMessage("Getting scooter");
-    setLoading(true);
-    setAddScooterForm(false);
     try {
       const response = await fetch(
         `http://localhost:8080/api/scooters?scooterMake=${getMake}&scooterModel=${getModel}`
@@ -81,12 +66,11 @@ const ScooterPage = () => {
       }
       const data = await response.json();
       setScooterData(data);
+      setMessage("");
     } catch (error) {
       console.error("Error getting scooter: ", error.message);
+      setMessage("Error getting scooter");
     }
-    // setAddScooterForm(false);
-    setLoading(false);
-    setMessage("");
   }
 
   const handleAddScooter = (event) => {
@@ -94,11 +78,8 @@ const ScooterPage = () => {
     addScooter();
   };
 
-  function emptyLog() {
-    setMessage("");
-  }
-
   async function addScooter() {
+    setCurrentForm("addScooter");
     const missingFields = [
       !make && "make",
       !model && "model",
@@ -111,7 +92,6 @@ const ScooterPage = () => {
       return;
     }
     setMessage("Adding scooter");
-    setAddRangeForm(true);
     try {
       const response = await fetch(
         `http://localhost:8080/api/scooters?username=${name}`,
@@ -130,16 +110,16 @@ const ScooterPage = () => {
       setTimeout(emptyLog, 2000);
       setGetMake(make);
       setGetModel(model);
+      getScooter();
     } catch (error) {
       console.error("Error adding scooter: ", error.message);
+      setMessage("Error adding scooter");
     } finally {
       setMake("");
       setModel("");
       setUserName("");
       setRange("");
-      setAddScooterForm(false);
-      setAddRangeForm(false);
-      getScooter();
+      setCurrentForm("");
     }
   }
 
@@ -149,6 +129,7 @@ const ScooterPage = () => {
   };
 
   async function deleteScooter() {
+    setCurrentForm("deleteScooter");
     const missingFields = [!name && "username", !password && "password"].filter(
       Boolean
     );
@@ -158,7 +139,7 @@ const ScooterPage = () => {
       return;
     }
     setMessage("Deleting scooter");
-    setDeleteForm(true);
+
     try {
       const response = await fetch(
         `http://localhost:8080/api/scooters?username=${name}&password=${password}`,
@@ -183,9 +164,7 @@ const ScooterPage = () => {
     } finally {
       setUserName("");
       setPassword("");
-      setAddScooterForm(false);
-      setAddRangeForm(false);
-      setDeleteForm(false);
+      setCurrentForm("");
     }
   }
 
@@ -195,6 +174,7 @@ const ScooterPage = () => {
   };
 
   async function addRange() {
+    setCurrentForm("addRange");
     const missingFields = [!name && "username", !range && "range"].filter(
       Boolean
     );
@@ -220,13 +200,14 @@ const ScooterPage = () => {
       }
       setMessage(`${make} ${model} range was registered in database`);
       setTimeout(emptyLog, 2500);
+      getScooter();
     } catch (error) {
       console.error("Error adding scooter range: ", error.message);
+      setMessage("Error adding range");
     } finally {
-      setAddRangeForm(false);
-      getScooter();
       setRange("");
       setUserName("");
+      setCurrentForm("");
     }
   }
 
@@ -253,18 +234,18 @@ const ScooterPage = () => {
         setModels={setModels}
         onSubm={handleGetScooter}
       />
-      {!addScooterForm && !addRangeForm && !deleteForm && (
+      {!currentForm && (
         <div className="add-scooter-btn">
           <button
             type="submit"
             className="btn btn-secondary mt-0"
-            onClick={() => setAddScooterForm(true)}
+            onClick={() => setCurrentForm("addScooter")}
           >
             Add Scooter
           </button>
         </div>
       )}
-      {addRangeForm && (
+      {currentForm === "addRange" && (
         <InputForm
           inputName1="User name"
           inputField1={name}
@@ -276,7 +257,7 @@ const ScooterPage = () => {
           buttonName="add range"
         />
       )}
-      {addScooterForm && (
+      {currentForm === "addScooter" && (
         <AddForm
           inputName1="Make"
           inputField1={make}
@@ -294,7 +275,7 @@ const ScooterPage = () => {
           buttonName="add"
         />
       )}
-      {deleteForm && (
+      {currentForm === "deleteScooter" && (
         <InputForm
           inputName1="User name"
           inputField1={name}
@@ -308,14 +289,12 @@ const ScooterPage = () => {
       )}
 
       <div className="go-back-btn">
-        {(addScooterForm || addRangeForm || deleteForm) && (
+        {currentForm && (
           <button
             type="submit"
             className="btn btn-secondary"
             onClick={() => {
-              setAddScooterForm(false);
-              setAddRangeForm(false);
-              setDeleteForm(false);
+              setCurrentForm("");
             }}
           >
             Go back
@@ -330,8 +309,9 @@ const ScooterPage = () => {
           claimedRange={scooterData.claimedRange}
           realRange={scooterData.realRange}
           users={scooterData.users}
-          onClk={() => setAddRangeForm(true)}
-          onClk2={() => setDeleteForm(true)}
+          onClk={() => setCurrentForm("addRange")}
+          onClk2={() => setCurrentForm("deleteScooter")}
+          onClk3={() => setCurrentForm("deleteScooter")}
         />
       )}
     </>

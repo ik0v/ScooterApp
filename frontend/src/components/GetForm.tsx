@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./InputForm.css";
+import Select from "react-select";
 
 interface Props {
   inputName1: string;
@@ -29,27 +30,6 @@ const GetForm = ({
   setModels,
   onSubm,
 }) => {
-  // const [makes, setMakes] = useState<string[]>([]);
-  // const [models, setModels] = useState<string[]>([]);
-
-  // useEffect(() => {
-  //   fetch("http://localhost:8080/api/scooters/makes")
-  //     .then((response) => response.json())
-  //     .then((data) => setMakes(data))
-  //     .catch((error) => console.error("Error fetching makes: ", error));
-  // }, []);
-
-  // useEffect(() => {
-  //   if (inputField1) {
-  //     fetch(`http://localhost:8080/api/scooters/models?make=${inputField1}`)
-  //       .then((response) => response.json())
-  //       .then((data) => setModels(data))
-  //       .catch((error) => console.error("Error fetching models: ", error));
-  //   } else {
-  //     setModels([]);
-  //   }
-  // }, [inputField1]);
-
   return (
     <div className="input-form">
       <form onSubmit={onSubm} className="form-content">

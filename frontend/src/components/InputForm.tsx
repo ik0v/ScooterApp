@@ -58,35 +58,3 @@ const InputForm = ({
 };
 
 export default InputForm;
-
-// <div className="input-form">
-//   <form onSubmit={handleAddScooter} className="form-content">
-//     <div className="text-input">
-//       <label htmlFor="username" className="form-label">
-//         Username
-//       </label>
-//       <input
-//         className="form-control"
-//         type="text"
-//         id="username"
-//         value={username}
-//         onChange={(e) => setUserName(e.target.value)}
-//       />
-//     </div>
-//     <div className="text-input">
-//       <label htmlFor="range" className="form-label">
-//         Range
-//       </label>
-//       <input
-//         className="form-control"
-//         type="text"
-//         id="range"
-//         value={range}
-//         onChange={(e) => setRange(e.target.value)}
-//       />
-//     </div>
-//     <button type="submit" className="btn btn-primary">
-//       Add scooter
-//     </button>
-//   </form>
-// </div>
