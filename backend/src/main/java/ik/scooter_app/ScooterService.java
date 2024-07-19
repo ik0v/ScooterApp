@@ -72,4 +72,8 @@ public class ScooterService {
     public void deleteScooter(ScooterDto scooterDto) {
         scooterRepo.deleteScooter(scooterDto);
     }
+
+    public Scooter updateScooter(Integer id, ScooterDto scooterDto) {
+        return scooterRepo.updateScooter(id, scooterDto);
+    }
 }

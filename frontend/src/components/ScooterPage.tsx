@@ -6,6 +6,7 @@ import Scooter from "./Scooter";
 import Header from "./Header";
 import AddForm from "./AddForm";
 import GetForm from "./GetForm";
+import ReportList from "./ReportList";
 
 const ScooterPage = () => {
   const [make, setMake] = useState("");
@@ -17,9 +18,8 @@ const ScooterPage = () => {
   const [range, setRange] = useState("");
   const [scooterData, setScooterData] = useState(null);
   const [message, setMessage] = useState("");
-
   const [currentForm, setCurrentForm] = useState<string>("");
-
+  const [currentScooterInfo, setCurrentScooterInfo] = useState<string>("");
   const [makes, setMakes] = useState<string[]>([]);
   const [models, setModels] = useState<string[]>([]);
 
@@ -33,7 +33,7 @@ const ScooterPage = () => {
       .then((response) => response.json())
       .then((data) => setMakes(data))
       .catch((error) => console.error("Error fetching makes: ", error));
-  }, [make, password]);
+  }, [make, password, currentForm]);
 
   useEffect(() => {
     if (getMake) {
@@ -44,7 +44,7 @@ const ScooterPage = () => {
     } else {
       setModels([]);
     }
-  }, [getMake]);
+  }, [getMake, currentForm]);
 
   function emptyLog() {
     setMessage("");
@@ -56,7 +56,9 @@ const ScooterPage = () => {
       setTimeout(emptyLog, 2500);
       return;
     }
-    setMessage("Getting scooter");
+    // if (!message) {
+    //   setMessage("Getting scooter");
+    // }
     try {
       const response = await fetch(
         `http://localhost:8080/api/scooters?scooterMake=${getMake}&scooterModel=${getModel}`
@@ -66,10 +68,12 @@ const ScooterPage = () => {
       }
       const data = await response.json();
       setScooterData(data);
-      setMessage("");
+      setCurrentScooterInfo("scooter");
+      // setMessage("");
     } catch (error) {
       console.error("Error getting scooter: ", error.message);
       setMessage("Error getting scooter");
+      setTimeout(emptyLog, 2500);
     }
   }
 
@@ -80,6 +84,7 @@ const ScooterPage = () => {
 
   async function addScooter() {
     setCurrentForm("addScooter");
+    setCurrentScooterInfo("");
     const missingFields = [
       !make && "make",
       !model && "model",
@@ -106,11 +111,83 @@ const ScooterPage = () => {
       if (!response.ok) {
         throw new Error("Failed to add scooter to the database");
       }
+      const data = await response.json();
       setMessage(`${make} ${model} was added to database`);
+      setScooterData(data);
       setTimeout(emptyLog, 2000);
       setGetMake(make);
       setGetModel(model);
-      getScooter();
+      // getScooter();
+    } catch (error) {
+      console.error("Error adding scooter: ", error.message);
+      setMessage("Error adding scooter");
+      setTimeout(emptyLog, 2500);
+    } finally {
+      setMake("");
+      setModel("");
+      setUserName("");
+      setRange("");
+      setCurrentForm("");
+      setCurrentScooterInfo("scooter");
+    }
+  }
+
+  useEffect(() => {
+    if (currentForm === "updateScooter") {
+      setMake(scooterData.make);
+      setModel(scooterData.model);
+      setRange(scooterData.claimedRange);
+    }
+  }, [currentForm]);
+
+  const handleUpdateScooter = (event) => {
+    event.preventDefault();
+    updateScooter();
+  };
+
+  async function updateScooter() {
+    // setCurrentForm("updateScooter");
+    const missingFields = [
+      !make && "make",
+      !model && "model",
+      !name && "username",
+      !range && "range",
+    ].filter(Boolean);
+    if (missingFields.length > 0) {
+      setMessage(`Please fill out: ${missingFields.join(", ")}`);
+      setTimeout(emptyLog, 3500);
+      return;
+    }
+    if (
+      make === scooterData.make &&
+      model === scooterData.model &&
+      range === scooterData.claimedRange
+    ) {
+      setMessage(`You didn't update scooter info`);
+      setTimeout(emptyLog, 3500);
+      return;
+    }
+    setMessage("Updating scooter");
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/scooters/${scooterData.id}?username=${name}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ make, model, range }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to add scooter to the database");
+      }
+      const data = await response.json();
+      setMessage(`${scooterData.make} ${scooterData.model} was updated`);
+      setScooterData(data);
+      setTimeout(emptyLog, 2000);
+      setGetMake(make);
+      setGetModel(model);
     } catch (error) {
       console.error("Error adding scooter: ", error.message);
       setMessage("Error adding scooter");
@@ -204,6 +281,7 @@ const ScooterPage = () => {
     } catch (error) {
       console.error("Error adding scooter range: ", error.message);
       setMessage("Error adding range");
+      setTimeout(emptyLog, 3500);
     } finally {
       setRange("");
       setUserName("");
@@ -241,7 +319,7 @@ const ScooterPage = () => {
             className="btn btn-secondary mt-0"
             onClick={() => setCurrentForm("addScooter")}
           >
-            Add Scooter
+            add scooter
           </button>
         </div>
       )}
@@ -275,6 +353,24 @@ const ScooterPage = () => {
           buttonName="add"
         />
       )}
+      {currentForm === "updateScooter" && (
+        <AddForm
+          inputName1="Make"
+          inputField1={make}
+          setInputField1={setMake}
+          inputName2="Model"
+          inputField2={model}
+          setInputField2={setModel}
+          inputName3="Username"
+          inputField3={name}
+          setInputField3={setUserName}
+          inputName4="Claimed Range"
+          inputField4={range}
+          setInputField4={setRange}
+          onSubm={handleUpdateScooter}
+          buttonName="update"
+        />
+      )}
       {currentForm === "deleteScooter" && (
         <InputForm
           inputName1="User name"
@@ -284,10 +380,9 @@ const ScooterPage = () => {
           inputField2={password}
           setInputField2={setPassword}
           onSubm={handleDeleteScooter}
-          buttonName="Delete scooter"
+          buttonName="delete scooter"
         />
       )}
-
       <div className="go-back-btn">
         {currentForm && (
           <button
@@ -297,12 +392,12 @@ const ScooterPage = () => {
               setCurrentForm("");
             }}
           >
-            Go back
+            go back
           </button>
         )}
       </div>
 
-      {scooterData && (
+      {scooterData && currentScooterInfo === "scooter" && (
         <Scooter
           make={scooterData.make}
           model={scooterData.model}
@@ -310,8 +405,18 @@ const ScooterPage = () => {
           realRange={scooterData.realRange}
           users={scooterData.users}
           onClk={() => setCurrentForm("addRange")}
-          onClk2={() => setCurrentForm("deleteScooter")}
-          onClk3={() => setCurrentForm("deleteScooter")}
+          getReportsBtn={() => setCurrentScooterInfo("reports")}
+          updateBtn={() => setCurrentForm("updateScooter")}
+          deleteBtn={() => setCurrentForm("deleteScooter")}
+        />
+      )}
+
+      {scooterData && currentScooterInfo === "reports" && (
+        <ReportList
+          make={scooterData.make}
+          model={scooterData.model}
+          reportList={scooterData.users}
+          setCurrentScooterInfo={setCurrentScooterInfo}
         />
       )}
     </>

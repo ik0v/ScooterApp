@@ -43,7 +43,7 @@ const InputForm = ({
           </label>
           <input
             className="form-control"
-            type="text"
+            type={buttonName === "delete scooter" ? "password" : "text"}
             id="inputField2"
             value={inputField2}
             onChange={(e) => setInputField2(e.target.value)}

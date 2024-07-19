@@ -13,8 +13,9 @@ interface ScooterProps {
   realRange: number;
   users: User[];
   onClk: () => void;
-  onClk2: () => void;
-  onClk3: () => void;
+  getReportsBtn: () => void;
+  updateBtn: () => void;
+  deleteBtn: () => void;
 }
 
 const Scooter = ({
@@ -24,8 +25,9 @@ const Scooter = ({
   realRange,
   users,
   onClk,
-  onClk2,
-  onClk3,
+  getReportsBtn,
+  updateBtn,
+  deleteBtn,
 }: ScooterProps) => {
   return (
     <div className="container d-flex justify-content-center">
@@ -47,15 +49,18 @@ const Scooter = ({
           <strong>Real range:</strong>{" "}
           {realRange && parseFloat(realRange.toFixed(2))}
         </p>
-        <div className="d-flex justify-content-evenly mb-3">
+        <div className="d-flex justify-content-evenly mb-3 btn-container">
           <button className="btn btn-secondary" onClick={onClk}>
-            Add Range
+            add range
           </button>
-          <button className="btn btn-secondary" onClick={onClk2}>
-            Delete Scooter
+          <button className="btn btn-secondary" onClick={getReportsBtn}>
+            get all reports
           </button>
-          <button className="btn btn-secondary" onClick={onClk3}>
-            Get all reports
+          <button className="btn btn-secondary" onClick={updateBtn}>
+            update scooter
+          </button>
+          <button className="btn btn-secondary" onClick={deleteBtn}>
+            delete scooter
           </button>
         </div>
         <ul className="list-group list-group-flush">

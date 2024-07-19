@@ -20,17 +20,22 @@ public class ScooterController {
     }
 
     @PostMapping()
-    ResponseEntity<ScooterDto> addScooter(@RequestBody ScooterDto scooterDto, @RequestParam String username) {
+    ResponseEntity<ScooterDtoOutgoing> addScooter(@RequestBody ScooterDto scooterDto, @RequestParam String username) {
         Scooter scooter = service.addScooter(scooterDto);
         int scooterId = scooter.getId();
-//        User user = service.addUser(username, scooter, scooterDto.range());
         URI location = URI.create("/api/scooters/" + scooterId);
-        return ResponseEntity.created(location).body(scooter.toDto());
+        return ResponseEntity.created(location).body(scooter.toScooterDtoOutgoing());
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<ScooterDtoOutgoing> updateScooter(@RequestBody ScooterDto scooterDto, @PathVariable int id, @RequestParam String username) {
+        Scooter scooter = service.updateScooter(id, scooterDto);
+        return ResponseEntity.ok(scooter.toScooterDtoOutgoing());
     }
 
     @DeleteMapping()
     ResponseEntity<?> deleteScooter(@RequestBody ScooterDto scooterDto, @RequestParam String username, @RequestParam String password) {
-        if(!password.equals("pass")) {
+        if (!password.equals("pass")) {
             return ResponseEntity.badRequest().build();
         }
         service.deleteScooter(scooterDto);
@@ -54,7 +59,7 @@ public class ScooterController {
             ScooterDtoOutgoing scooterDtoOutgoing = service.getScooter(
                     new ScooterDtoIncoming(scooterMake.strip(), scooterModel.strip()));
             return ResponseEntity.ok(scooterDtoOutgoing);
-        } catch (IllegalArgumentException e ) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -76,7 +81,7 @@ public class ScooterController {
         try {
             List<ScooterDtoOutgoing> leaderboardByRange = service.getLeaderboardByRange();
             return ResponseEntity.ok(leaderboardByRange);
-        } catch (IllegalArgumentException e ) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -86,7 +91,7 @@ public class ScooterController {
         try {
             List<ScooterDtoOutgoing> leaderboardByRatio = service.getLeaderboardByRatio();
             return ResponseEntity.ok(leaderboardByRatio);
-        } catch (IllegalArgumentException e ) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }

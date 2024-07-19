@@ -73,7 +73,7 @@ const GetForm = ({
           </select>
         </div>
         <button type="submit" className="btn btn-secondary">
-          Get scooter
+          get scooter
         </button>
       </form>
     </div>

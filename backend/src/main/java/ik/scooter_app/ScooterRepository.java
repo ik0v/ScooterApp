@@ -20,8 +20,17 @@ public class ScooterRepository {
         return scooterDbRepo.save(new Scooter(scooterDto));
     }
 
-    public void updateScooter(Scooter scooter) {
+    public Scooter updateScooter(Scooter scooter) {
+        return scooterDbRepo.save(scooter);
+    }
+
+    public Scooter updateScooter(Integer id, ScooterDto scooterDto) {
+        Scooter scooter = scooterDbRepo.findById(id).orElseThrow();
+        scooter.setMake(scooterDto.make());
+        scooter.setModel(scooterDto.model());
+        scooter.setClaimedRange(scooterDto.range());
         scooterDbRepo.save(scooter);
+        return scooter;
     }
 
     public Scooter getScooter(ScooterDtoIncoming sDi) {
